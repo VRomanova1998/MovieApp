@@ -61,14 +61,14 @@
     "prettier": "3.4.2"
   },
   "husky": {
- "hooks": {
- "pre-commit": "lint-staged"
- }
- },
- "lint-staged": {
- "*.{ts, tsx}": [
- "eslint --fix",
- "prettier --write"
- ]
-}
+    "hooks": {
+    "pre-commit": "lint-staged"
+    }
+     },
+    "lint-staged": {
+    "src/**/*.tsx": [
+    "eslint --fix",
+    "prettier --write"
+    ]
+   }
 }
