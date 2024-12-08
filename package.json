@@ -9,7 +9,9 @@
     "@types/node": "^22.10.1",
     "@types/react": "^18.3.13",
     "@types/react-dom": "^18.3.1",
+    "antd": "^5.22.3",
     "cra-template-typescript": "1.2.0",
+    "date-fns": "^4.1.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-scripts": "5.0.1",
@@ -22,8 +24,8 @@
     "eject": "react-scripts eject",
     "prepare": "husky",
     "lint": "eslint ./src/**/*.tsx",
-		"lint:fix": "eslint ./src/**/*.tsx --fix",
-		"format": "prettier --write ./src"
+    "lint:fix": "eslint ./src/**/*.tsx --fix",
+    "format": "prettier --write ./src"
   },
   "eslintConfig": {
     "extends": [
@@ -62,13 +64,13 @@
   },
   "husky": {
     "hooks": {
-    "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged"
     }
-     },
-    "lint-staged": {
+  },
+  "lint-staged": {
     "src/**/*.tsx": [
-    "eslint --fix",
-    "prettier --write"
+      "eslint --fix",
+      "prettier --write"
     ]
-   }
+  }
 }
