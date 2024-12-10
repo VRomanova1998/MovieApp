@@ -1,41 +1,73 @@
 import React, { Component } from 'react';
+import { LoadingOutlined } from '@ant-design/icons';
+import { Spin, Alert } from 'antd';
 
 import { CardList } from './components/CardList/CardList';
+import GetResponse from './components/GetResponse/GetResponse';
+import './App.css';
 
 class App extends Component {
   state = {
     res: [],
+    loading: false,
+    error: false,
+    errorMessage: '',
   };
-  getResponse = async () => {
-    const options = {
-      method: 'GET',
-      headers: {
-        accept: 'application/json',
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1MGM4ZTAyY2I3YmVlYjBkNzZiYWZhZGVmMDY2MjhjMSIsIm5iZiI6MTczMzI1OTc5Mi4wODA5OTk5LCJzdWIiOiI2NzRmNzIxMGI2NjY4MzBiNmU0M2NiYzAiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.k-oCpffGpNFxpX8rP9OlmTrf8zt9mvGoiM0TE5hzlx4',
-      },
-    };
-    const response = await fetch('https://api.themoviedb.org/3/search/movie?query=return&language=en-US', options);
-    const json = await response.json();
-    this.setState(() => {
-      return {
-        res: json.results,
-      };
+
+  onError = (message: string) => {
+    this.setState({
+      loading: false,
+      error: true,
+      errorMessage: message,
     });
   };
 
-  check = () => {
-    console.log(this.state.res);
+  getResponse = async () => {
+    this.setState({
+      loading: true,
+    });
+    try {
+      let resultResponse = await GetResponse();
+      resultResponse = resultResponse.results;
+      if (resultResponse.length === 0) {
+        throw new Error('По вашему запросу ничего не найдено или проблемы с сервером');
+      }
+      this.setState(() => {
+        return {
+          res: resultResponse,
+          loading: false,
+        };
+      });
+    } catch (err) {
+      this.onError(err.message);
+    }
   };
 
   render() {
-    return (
-      <div>
-        <CardList dataArray={this.state.res} />
-        <button onClick={this.getResponse}>Отправить запрос</button>
-        <button onClick={this.check}>Ешь меня</button>
-      </div>
-    );
+    const { loading, error, errorMessage } = this.state;
+    const hasData = !(loading || error);
+    const errorAlert = error ? <Alert message={errorMessage} type="error" showIcon className="error-format" /> : null;
+    const spiner = loading ? <Spin indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />} /> : null;
+    const cardList = hasData ? <CardList dataArray={this.state.res} /> : null;
+
+    if (navigator.onLine) {
+      return (
+        <div>
+          {errorAlert}
+          {spiner}
+          {cardList}
+          <button onClick={this.getResponse}>Отправить запрос</button>
+        </div>
+      );
+    } else
+      return (
+        <Alert
+          message="Нет подключения к интернету, проверьте интернет-соединение и повторите попытку."
+          type="error"
+          showIcon
+          className="error-format"
+        />
+      );
   }
 }
 

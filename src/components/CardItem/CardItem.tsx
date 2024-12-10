@@ -1,48 +1,34 @@
 /* eslint-disable import/order */
 import './card-item.css';
 
-import { format } from 'date-fns';
+import MovieDescription from '../MovieDescription/MovieDescription';
+import { Card, Flex } from 'antd';
 
-//import MovieDescription from '../MovieDescription/MovieDescription';
-import { Card, Flex, Typography } from 'antd';
-const { Text, Title } = Typography;
-
-const shortOverview = (text: string) => {
-  if (text.length < 280) return text;
-  let newText = text.slice(0, 280);
-  const last = newText.lastIndexOf(' ');
-  newText = newText.slice(0, last);
-  return newText + ' ...';
+type PropsFormat = {
+  id?: number;
+  poster_path: string;
+  title: string;
+  release_date: string;
+  overview: string;
 };
 
-const releaseDate = (date: string) => {
-  if (date) {
-    return format(new Date(date), 'MMMM dd, yyyy');
+function getPoster(poster: string) {
+  if (poster) {
+    return `https://image.tmdb.org/t/p/original${poster}`;
   }
-  return;
-};
+  return 'https://upload.wikimedia.org/wikipedia/commons/a/a1/Out_Of_Poster.jpg';
+}
 
-const CardItem: React.FC = (props) => (
+const CardItem = (prop: PropsFormat) => (
   <Card hoverable styles={{ body: { padding: 0, overflow: 'hidden' } }} className="cardItem">
     <Flex justify="flex-start">
-      <img alt="avatar" src="https://image.tmdb.org/t/p/w500/1E5baAaEse26fej7uHcjOgEE2t2.jpg" className="image" />
-      <Flex vertical align="flex-start" justify="flex-start" className="description_container">
-        <Title level={4} className="title" style={{ margin: 0 }}>
-          {props.title}
-        </Title>
-        <Text type="secondary" className="text">
-          {releaseDate(props.release_date)}
-        </Text>
-        <div>
-          <Text keyboard className="text">
-            Action
-          </Text>
-          <Text keyboard className="text">
-            Drama
-          </Text>
-        </div>
-        <Text className="text">{shortOverview(props.overview)}</Text>
-      </Flex>
+      <img alt="avatar" src={getPoster(prop.poster_path)} className="image" />
+      <MovieDescription
+        poster_path={prop.poster_path}
+        title={prop.title}
+        release_date={prop.release_date}
+        overview={prop.overview}
+      />
     </Flex>
   </Card>
 );
