@@ -6,4 +6,5 @@
   display: flex;
   gap: 30px;
   flex-wrap: wrap;
+  margin-bottom: 20px;
 }

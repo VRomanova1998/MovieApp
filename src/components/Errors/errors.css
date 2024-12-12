@@ -1,0 +1,17 @@
+.error-format {
+    display: block;
+    margin-top: 100px;
+    font-size: 20px;
+    width: 938px;
+}
+
+.error-format::after {
+    display: block;
+    position: relative;
+    width: 100px;
+    height: 100px;
+    content: url('./file/sadCat.png');
+    transform: scale(0.4);
+    left: 650px;
+    top: -130px;
+}
