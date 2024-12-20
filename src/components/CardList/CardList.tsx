@@ -4,6 +4,7 @@ import { CardListProps } from '../../types';
 
 const CardList = (props: CardListProps) => {
   const itemMovieData = props.dataMovie.map((item) => {
+    console.log(item);
     return (
       <CardItem
         {...item}
