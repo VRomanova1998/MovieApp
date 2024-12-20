@@ -94,7 +94,6 @@ class App extends Component {
       const url = `https://api.themoviedb.org/3/search/movie?query=${this.state.label}&language=en-US&page=${this.state.currentPage}`;
       const response = await GetResponse(url, 'GET');
       const resultResponse = response.results;
-      console.log(resultResponse);
       if (resultResponse.length === 0 && this.state.label !== '') {
         this.setState({
           totalResults: 1,
