@@ -2,8 +2,8 @@ import React from 'react';
 import { Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 
-import SearchError from './components/Errors/SearchError';
-import SomeError from './components/Errors/SomeError';
+import SearchError from '../Errors/SearchError';
+import SomeError from '../Errors/SomeError';
 
 const ViewFragment = (props: { loading: boolean; error: boolean; errorMessage: string; errorName: string }) => {
   const { loading, error, errorMessage, errorName } = props;

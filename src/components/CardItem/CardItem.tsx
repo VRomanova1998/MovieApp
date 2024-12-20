@@ -1,16 +1,10 @@
+import { Component } from 'react';
 import { Card, Flex } from 'antd';
 
 import MovieDescription from '../MovieDescription/MovieDescription';
+import { ItemFormat, SearchProps } from '../../types';
 
 import './card-item.css';
-
-type PropsFormat = {
-  id?: number;
-  poster_path: string;
-  title: string;
-  release_date: string;
-  overview: string;
-};
 
 function getPoster(poster: string) {
   if (poster) {
@@ -19,20 +13,17 @@ function getPoster(poster: string) {
   return 'https://upload.wikimedia.org/wikipedia/commons/a/a1/Out_Of_Poster.jpg';
 }
 
-const CardItem = (prop: PropsFormat) => {
-  return (
-    <Card hoverable styles={{ body: { padding: 0, overflow: 'hidden' } }} className="cardItem">
-      <Flex justify="flex-start">
-        <img alt="poster" src={getPoster(prop.poster_path)} className="image" />
-        <MovieDescription
-          poster_path={prop.poster_path}
-          title={prop.title}
-          release_date={prop.release_date}
-          overview={prop.overview}
-        />
-      </Flex>
-    </Card>
-  );
-};
+class CardItem extends Component<ItemFormat & SearchProps> {
+  render() {
+    return (
+      <Card hoverable styles={{ body: { padding: 0, overflow: 'hidden' } }} className="cardItem movie-card_mobile">
+        <Flex justify="flex-start" className="movie-card-container_mobile">
+          <img alt="poster" src={getPoster(this.props.poster_path)} className="image image_mobile" />
+          <MovieDescription {...this.props} />
+        </Flex>
+      </Card>
+    );
+  }
+}
 
 export default CardItem;

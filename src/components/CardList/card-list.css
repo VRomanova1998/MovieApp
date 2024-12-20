@@ -1,5 +1,5 @@
 .card-list-container {
-  width: 1200px;
+  max-width: 1200px;
   left: 215px;
   gap: 0px;
   opacity: 0px;

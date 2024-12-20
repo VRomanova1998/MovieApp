@@ -1,17 +1,18 @@
 import CardItem from '../CardItem/CardItem';
 import './card-list.css';
-
-interface CardListProps {
-  dataArray: object[];
-}
-
-type ItemFormat = {
-  id?: number;
-};
+import { CardListProps } from '../../types';
 
 const CardList = (props: CardListProps) => {
-  const itemMovieData = props.dataArray.map((item: ItemFormat) => {
-    return <CardItem {...item} key={item.id} />;
+  const itemMovieData = props.dataMovie.map((item) => {
+    return (
+      <CardItem
+        {...item}
+        key={item.id}
+        guestSessionId={props.guestSessionId}
+        onChangeRating={props.onChangeRating}
+        rating={props.rating}
+      />
+    );
   });
   return <div className="card-list-container">{itemMovieData}</div>;
 };
