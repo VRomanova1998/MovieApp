@@ -84,7 +84,7 @@ export default class Rated extends Component<Pro> {
         />
       ) : null;
     return (
-      <div>
+      <React.Fragment>
         <CardList
           dataMovie={data}
           guestSessionId={this.state.guestId}
@@ -92,7 +92,7 @@ export default class Rated extends Component<Pro> {
           onChangeRating={this.props.onChangeRating}
         />
         {pagination}
-      </div>
+      </React.Fragment>
     );
   }
 }

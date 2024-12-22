@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import { Flex, Typography, Rate } from 'antd';
 import { format } from 'date-fns';
 
@@ -43,7 +43,7 @@ class MovieDescription extends Component<ItemFormat & SearchProps> {
     const className = 'rating ' + colorClass;
     const id = this.props.id.toString();
     return (
-      <div>
+      <React.Fragment>
         <Flex vertical align="flex-start" className="description_container description_container_mobile">
           <Flex justify="space-between" className="header-movie-description">
             <Title level={4} className="title" style={{ margin: 0 }} rootClassName="title">
@@ -69,7 +69,7 @@ class MovieDescription extends Component<ItemFormat & SearchProps> {
             onChange={this.handleChangeRate}
           />
         </Flex>
-      </div>
+      </React.Fragment>
     );
   }
 }
