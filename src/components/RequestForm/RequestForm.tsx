@@ -4,11 +4,13 @@ import './request-form.css';
 interface Formprops {
   onChangeLabel: (value: string) => void;
   label: string;
+  onChange: (page: number) => void;
 }
 
 const RequestForm = (props: Formprops) => {
   const changeRequest = (e: React.ChangeEvent<HTMLInputElement>) => {
     props.onChangeLabel(e.target.value);
+    props.onChange(1);
   };
   return (
     <React.Fragment>

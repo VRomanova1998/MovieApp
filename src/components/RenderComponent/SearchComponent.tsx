@@ -22,7 +22,7 @@ export const Search = (props: ModuleProps & SearchProps) => {
     ) : null;
   return (
     <React.Fragment>
-      <RequestForm onChangeLabel={props.onChangeLabel} label={props.label} />
+      <RequestForm onChangeLabel={props.onChangeLabel} label={props.label} onChange={props.onChangePage} />
       <ViewFragment
         loading={props.loading}
         error={props.error}
