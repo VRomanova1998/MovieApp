@@ -13,7 +13,8 @@ export const Search = (props: ModuleProps & SearchProps) => {
     props.totalResults > 20 ? (
       <Pagination
         align="center"
-        defaultCurrent={props.currentPage}
+        defaultCurrent={1}
+        current={props.currentPage}
         onChange={props.onChangePage}
         defaultPageSize={20}
         total={props.totalResults}
@@ -22,7 +23,7 @@ export const Search = (props: ModuleProps & SearchProps) => {
     ) : null;
   return (
     <React.Fragment>
-      <RequestForm onChangeLabel={props.onChangeLabel} label={props.label} onChange={props.onChangePage} />
+      <RequestForm onChangeLabel={props.onChangeLabel} label={props.label} />
       <ViewFragment
         loading={props.loading}
         error={props.error}

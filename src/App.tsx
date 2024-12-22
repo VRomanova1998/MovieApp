@@ -79,6 +79,7 @@ class App extends Component {
   onChangeLabel = async (value: string) => {
     this.setState({
       label: value,
+      currentPage: 1,
     });
   };
 

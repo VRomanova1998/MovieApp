@@ -75,7 +75,8 @@ export default class Rated extends Component<Pro> {
       this.state.totalResults > 20 ? (
         <Pagination
           align="center"
-          defaultCurrent={this.state.currentPage}
+          defaultCurrent={1}
+          current={this.state.currentPage}
           total={this.state.totalResults}
           onChange={this.onChangePage}
           defaultPageSize={20}
