@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Pagination } from 'antd';
 
 import { CardList } from '../CardList/CardList';
+import { myRatingRequest } from '../../helper';
 
 interface Pro {
   guestSessionId: number;
@@ -35,35 +36,23 @@ export default class Rated extends Component<Pro> {
     }
   }
 
-  createGetResponse = async (guestId: number) => {
+  createGetResponse = (guestId: number) => {
     this.setState({
       loading: true,
       error: false,
     });
-    const options = {
-      method: 'GET',
-      headers: {
-        accept: 'application/json',
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1MGM4ZTAyY2I3YmVlYjBkNzZiYWZhZGVmMDY2MjhjMSIsIm5iZiI6MTczMzI1OTc5Mi4wODA5OTk5LCJzdWIiOiI2NzRmNzIxMGI2NjY4MzBiNmU0M2NiYzAiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.k-oCpffGpNFxpX8rP9OlmTrf8zt9mvGoiM0TE5hzlx4',
-      },
-    };
-
-    const resRate = await fetch(
-      `https://api.themoviedb.org/3/guest_session/${guestId}/rated/movies?language=en-US&page=${this.state.currentPage}&sort_by=created_at.asc`,
-      options
-    );
-    if (resRate.status === 404) {
+    myRatingRequest(guestId, this.state.currentPage).then((res) => {
+      if (res === 'error') {
+        this.setState({
+          error: true,
+        });
+      }
+      const dataRate = res.results;
       this.setState({
-        error: true,
+        dataMovie: dataRate,
+        loading: false,
+        totalResults: res.total_results,
       });
-    }
-    const resRateJson = await resRate.json();
-    const dataRate = await resRateJson.results;
-    this.setState({
-      dataMovie: dataRate,
-      loading: false,
-      totalResults: resRateJson.total_results,
     });
   };
   render() {

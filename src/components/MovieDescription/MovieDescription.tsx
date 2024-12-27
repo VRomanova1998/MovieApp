@@ -4,9 +4,9 @@ import { format } from 'date-fns';
 
 import { GenreDataConsumer } from '../GenreContext/GenreContext';
 import '../CardItem/card-item.css';
-import GetResponse from '../GetResponse/GetResponse';
 import Genre from '../Genre/Genre';
 import { ItemFormat, SearchProps } from '../../types';
+import { createColorRating, postNewRating } from '../../helper';
 
 const { Text, Title } = Typography;
 
@@ -27,19 +27,11 @@ class MovieDescription extends Component<ItemFormat & SearchProps> {
   handleChangeRate = (value: number) => {
     this.props.onChangeRating(this.props.id, value);
     if (value === 0) return;
-    const url = `https://api.themoviedb.org/3/movie/${this.props.id}/rating?guest_session_id=${this.props.guestSessionId}`;
-    GetResponse(url, 'POST', 'application/json;charset=utf-8', value);
+    postNewRating(this.props.id, this.props.guestSessionId, value);
   };
   render() {
     const voteAverage = this.props.vote_average.toFixed(1);
-    const colorClass =
-      Number(voteAverage) <= 3
-        ? 'red'
-        : Number(voteAverage) > 3 && Number(voteAverage) < 5
-          ? 'orange'
-          : Number(voteAverage) > 5 && Number(voteAverage) < 7
-            ? 'yellow'
-            : 'green';
+    const colorClass = createColorRating(voteAverage);
     const className = 'rating ' + colorClass;
     const id = this.props.id.toString();
     return (

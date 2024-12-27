@@ -4,9 +4,9 @@ import { debounce } from 'lodash';
 import './App.css';
 import NoConnectionError from './components/Errors/NoConnectionError';
 import ModuleTab from './components/Tabs/Tabs';
-import GetResponse from './components/GetResponse/GetResponse';
 import guestSession from './components/Guest-Session/GuestSession';
 import { GenreDataProvider } from './components/GenreContext/GenreContext';
+import { getGenreDataRequest, getMovieDataRequest } from './helper';
 
 class SearchError extends Error {
   constructor(message: string) {
@@ -34,7 +34,6 @@ class App extends Component {
     window.addEventListener('online', this.updateOnlineStatus);
     window.addEventListener('offline', this.updateOnlineStatus);
     this.createGuestSession();
-    this.getGenreData();
   }
 
   componentDidUpdate(prevProps: unknown, prevState: { label: string; currentPage: number }) {
@@ -50,16 +49,17 @@ class App extends Component {
 
   createGuestSession = async () => {
     const resGuest = await guestSession();
-    this.setState({
+    this.setState(() => ({
       guestSessionId: resGuest,
-    });
+    }));
+    this.getGenreData();
   };
 
-  getGenreData = async () => {
-    const url = 'https://api.themoviedb.org/3/genre/movie/list?language=en';
-    const genreInfo = await GetResponse(url, 'GET');
-    this.setState({
-      genreDataArr: genreInfo.genres,
+  getGenreData = () => {
+    getGenreDataRequest().then((res) => {
+      this.setState({
+        genreDataArr: res.genres,
+      });
     });
   };
 
@@ -91,27 +91,26 @@ class App extends Component {
       errorMessage: '',
       totalResults: 1,
     });
-    try {
-      const url = `https://api.themoviedb.org/3/search/movie?query=${this.state.label}&language=en-US&page=${this.state.currentPage}`;
-      const response = await GetResponse(url, 'GET');
-      const resultResponse = response.results;
-      if (resultResponse.length === 0 && this.state.label !== '') {
-        this.setState({
-          totalResults: 1,
+    getMovieDataRequest(this.state.label, this.state.currentPage)
+      .then((res) => {
+        if (res.results.length === 0 && this.state.label !== '') {
+          this.setState({
+            totalResults: 1,
+          });
+          throw new SearchError('По Вашему запросу ничего не найдено');
+        }
+        this.setState(() => {
+          return {
+            dataMovie: res.results,
+            loading: false,
+            totalResults: res.total_results,
+            currentPage: res.page,
+          };
         });
-        throw new SearchError('По Вашему запросу ничего не найдено');
-      }
-      this.setState(() => {
-        return {
-          dataMovie: resultResponse,
-          loading: false,
-          totalResults: response.total_results,
-          currentPage: response.page,
-        };
+      })
+      .catch((err) => {
+        this.onError(err.name, err.message);
       });
-    } catch (err) {
-      this.onError(err.name, err.message);
-    }
   };
 
   debouncedSearch = debounce(this.getResponse, 1200);

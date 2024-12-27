@@ -3,8 +3,8 @@ import { Component } from 'react';
 
 import Rated from '../RenderComponent/RatedComponent';
 import { Search } from '../RenderComponent/SearchComponent';
-import GetResponse from '../GetResponse/GetResponse';
 import { ModuleProps } from '../../types';
+import { deleteRating } from '../../helper';
 
 export default class ModuleTab extends Component<ModuleProps> {
   state = {
@@ -13,8 +13,7 @@ export default class ModuleTab extends Component<ModuleProps> {
 
   onChangeRating = (movieID: number, value: number) => {
     if (value === 0) {
-      const url = `https://api.themoviedb.org/3/movie/${movieID}/rating?guest_session_id=${this.props.guestSessionId}`;
-      GetResponse(url, 'DELETE', 'application/json;charset=utf-8');
+      deleteRating(movieID, this.props.guestSessionId);
     }
     const newObj: { [key: string]: number } = this.state.ratings;
     const id = movieID.toString();
